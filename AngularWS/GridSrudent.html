@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html ng-app="ProductsApp">
+<head>
+    <title></title>
+    <script src="lib/angular.js"></script>
+    <link href="lib/bootstrap.css" rel="stylesheet" />
+    <script src="scripts/Angular1.js"></script>
+</head>
+
+<body>
+    <div ng-controller="ProductsCtrl" class="jumbotron">
+
+        <table class="table table-striped" border="1">
+            <thead>
+                PLUS:
+                <tr>
+                    <th>
+                        Lines to exhibit <input type="number" step="1" min="0" max="5" ng-model="linenumbers"/>
+                    </th>
+                    <th>Order by: <select ng-model="column">
+                            <option value="name">Name Ascending </option>
+                            <option value="-name">Name Descendent </option>
+                            <option value="total">Total Ascending </option>
+                            <option value="-total">Total Ascending </option>
+                            <option value="percentage">Percentage Ascending </option>
+                            <option value="-percentage">Percentage descendent </option>
+                        </select>
+                    </th>
+                    <th>
+                        Filter: <input type="text" placeholder="search a name"  ng-model="criteria"/>
+                        <input type="text" placeholder="search in grid" ng-model="g_criteria" />
+                    </th>
+                </tr>
+            </thead>
+        </table>
+        <br />
+            <table class="table table-hover" border="1">
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>Name</th>
+                        <th>Subject1</th>
+                        <th>Subject2</th>
+                        <th>Subject3</th>
+                        <th>Subject4</th>
+                        <th>Subject5</th>
+                        <th>Total</th>
+                        <th>Percentage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="product in products | limitTo:linenumbers | orderBy:column | filter : {name :criteria} | filter:g_criteria">
+                        <td>{{product.id}}</td>
+                        <td>{{product.name}}</td>
+                        <td>{{product.Subject1}}</td>
+                        <td>{{product.Subject2}}</td>
+                        <td>{{product.Subject3}}</td>
+                        <td>{{product.Subject4}}</td>
+                        <td>{{product.Subject5}}</td>
+                        <td>{{product.total}}</td>
+                        <td>{{product.percentage | number: 2}}</td>
+                    </tr>
+                </tbody>
+            </table>
+</div>
+</body>
+</html>

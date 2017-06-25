@@ -1,0 +1,85 @@
+﻿
+//--------------------------------------------------------------------------------------------
+// HI nonono team,
+// I created a simple C# project using sql Server as database (requested by you) and angular 
+// just to put some features
+// * IMPORTANT
+// - I used my Microsoft Visual Studio Express 2015 for Web use a database created as "College"
+// - Datasource is : Data Source=(localdb)\MSSQLLocalDB
+// - below the script to create the database as you think is necessary.
+// - for a simple stored procedure with 2 tables I just used join and made the calcs as requested 
+//   (no parameters, again just as requested)
+// 
+// Regards,
+// Mauro Candido
+//--------------------------------------------------------------------------------------------
+
+
+
+
+/****** Creating the Student Table with a PRIMARY key ******/
+USE [College]
+GO
+/****** Object: Table [dbo].[Student] Script Date: 5/6/2017 7:05:56 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Student] (
+    [Id]   INT        NOT NULL,
+    [name] NCHAR (25) NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+----
+
+// Creating the Marklist Table with a FOREIGN key 
+CREATE TABLE [dbo].[Marklist] (
+    [Id]       INT          NULL,
+    [Subject1] NUMERIC (18) NULL,
+    [Subject2] NUMERIC (18) NULL,
+    [Subject3] NUMERIC (18) NULL,
+    [Subject4] NUMERIC (18) NULL,
+    [Subject5] NUMERIC (18) NULL,
+    CONSTRAINT [FK_Table_Student] FOREIGN KEY ([Id]) REFERENCES [dbo].[Student] ([Id])
+);
+
+
+-----
+
+
+
+// Inserting the DATA as requested - STUDENT
+insert into Student (Id, name) values (1, "AAA");
+insert into Student (Id, name) values (2, "BBB");
+insert into Student (Id, name) values (3, "CCC");
+insert into Student (Id, name) values (4, "DDD");
+insert into Student (Id, name) values (5, "EEE");
+
+// Inserting the DATA as requested - Marklist
+INSERT INTO [dbo].[Marklist] ([Id], [Subject1], [Subject2], [Subject3], [Subject4], [Subject5]) VALUES (1,	65,	75,	79,	45,	45)
+INSERT INTO [dbo].[Marklist] ([Id], [Subject1], [Subject2], [Subject3], [Subject4], [Subject5]) VALUES (2,	56,	56,	46, 87,	67)
+INSERT INTO [dbo].[Marklist] ([Id], [Subject1], [Subject2], [Subject3], [Subject4], [Subject5]) VALUES (3,	48,	84,	75,	56,	64)
+INSERT INTO [dbo].[Marklist] ([Id], [Subject1], [Subject2], [Subject3], [Subject4], [Subject5]) VALUES (4,	86,	66,	56,	45,	57)
+INSERT INTO [dbo].[Marklist] ([Id], [Subject1], [Subject2], [Subject3], [Subject4], [Subject5]) VALUES (5,	97,	89,	23,	78,	89)
+
+// STORED PROCEDURE
+
+CREATE PROCEDURE [dbo].[sp_cal_total_percentage]
+AS
+BEGIN
+	SELECT Student.id, Student.name,
+           Marklist.Subject1 , Marklist.Subject2 ,  Marklist.Subject3 ,  Marklist.Subject4 ,  Marklist.Subject5, 
+           Marklist.Subject1 + Marklist.Subject2 +  Marklist.Subject3 +  Marklist.Subject4 +  Marklist.Subject5 as [Total],
+		  (Marklist.Subject1 + Marklist.Subject2 +  Marklist.Subject3 +  Marklist.Subject4 +  Marklist.Subject5)  / 5 as [Percentage]
+      From Student 
+	inner join Marklist  ON
+	Student.id = Marklist.id
+END 
+RETURN
+GO
+
+
